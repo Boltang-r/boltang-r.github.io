@@ -118,7 +118,7 @@
         }
 
         .hidden-content.open {
-            max-height: 800px;
+            max-height: 400px;
             opacity: 1;
             margin-top: 28px;
         }
@@ -207,15 +207,15 @@
             pointer-events: auto;
         }
 
-        /* ---------- БЛОК ВЫБОРА СОБЫТИЯ ---------- */
+        /* ---------- БЛОК ВЫБОРА СОБЫТИЯ (теперь он снаружи открытки) ---------- */
         .planning-block {
             display: none;
             margin-top: 25px;
-            padding: 20px;
+            padding: 24px 20px 20px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.06);
-            animation: fadeSlideUp 0.5s ease;
+            animation: fadeSlideUp 0.6s ease;
         }
 
         .planning-block.show {
@@ -225,7 +225,7 @@
         @keyframes fadeSlideUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -416,7 +416,7 @@
                 max-height: 60vh;
             }
             .planning-block {
-                padding: 16px;
+                padding: 16px 14px;
             }
             .custom-select select,
             .calendar-input {
@@ -463,37 +463,37 @@
             </div>
             <!-- КНОПКА С ЭМОДЗИ СЕРДЦА -->
             <button class="heart-btn" id="heartBtn">❤️</button>
+        </div>
 
-            <!-- ====== БЛОК ПЛАНИРОВАНИЯ (появляется после картинки) ====== -->
-            <div class="planning-block" id="planningBlock">
+        <!-- ====== БЛОК ПЛАНИРОВАНИЯ (теперь он снаружи hidden-content!) ====== -->
+        <div class="planning-block" id="planningBlock">
 
-                <!-- ВЫБОР СОБЫТИЯ -->
-                <div class="custom-select">
-                    <label for="eventSelect">🎯 Событие</label>
-                    <select id="eventSelect">
-                        <option value="">— Выберите событие —</option>
-                        <option value="Aquatoria">Aquatoria</option>
-                        <option value="Глэмпинг у моря (выбираем вдвоем)">Глэмпинг у моря (выбираем вдвоем)</option>
-                        <option value="Панда Парк">Панда Парк 🐼</option>
-                        <option value="Ужин в ресторане">Ужин в ресторане</option>
-                        <option value="Поход в кино">Поход в кино</option>
-                        <option value="Катание на сапах">Катание на сапах</option>
-                        <option value="Велопрогулка на Русском острове">Велопрогулка на Русском острове</option>
-                    </select>
-                </div>
-
-                <!-- ВЫБОР ДАТЫ (КАЛЕНДАРЬ) -->
-                <div class="calendar-container">
-                    <label for="dateInput">📅 Дата</label>
-                    <input type="date" class="calendar-input" id="dateInput" />
-                </div>
-
-                <!-- ЯЧЕЙКА С ОТВЕТОМ -->
-                <div class="result-box" id="resultBox">
-                    <span class="placeholder">Выберите событие и дату ✨</span>
-                </div>
-
+            <!-- ВЫБОР СОБЫТИЯ -->
+            <div class="custom-select">
+                <label for="eventSelect">🎯 Событие</label>
+                <select id="eventSelect">
+                    <option value="">— Выберите событие —</option>
+                    <option value="Aquatoria">Aquatoria</option>
+                    <option value="Глэмпинг у моря (выбираем вдвоем)">Глэмпинг у моря (выбираем вдвоем)</option>
+                    <option value="Панда Парк">Панда Парк 🐼</option>
+                    <option value="Ужин в ресторане">Ужин в ресторане</option>
+                    <option value="Поход в кино">Поход в кино</option>
+                    <option value="Катание на сапах">Катание на сапах</option>
+                    <option value="Велопрогулка на Русском острове">Велопрогулка на Русском острове</option>
+                </select>
             </div>
+
+            <!-- ВЫБОР ДАТЫ (КАЛЕНДАРЬ) -->
+            <div class="calendar-container">
+                <label for="dateInput">📅 Дата</label>
+                <input type="date" class="calendar-input" id="dateInput" />
+            </div>
+
+            <!-- ЯЧЕЙКА С ОТВЕТОМ -->
+            <div class="result-box" id="resultBox">
+                <span class="placeholder">Выберите событие и дату ✨</span>
+            </div>
+
         </div>
 
     </div>
@@ -553,6 +553,12 @@
 
         heartBtn.addEventListener('click', function(e) {
             e.stopPropagation();
+
+            // Если блок уже показан, не показываем картинку повторно
+            if (planningBlock.classList.contains('show')) {
+                return;
+            }
+
             if (isImageShowing) {
                 clearTimeout(imageTimer);
                 imageTimer = null;
@@ -605,34 +611,30 @@
         const today = new Date().toISOString().split('T')[0];
         dateInput.min = today;
 
-        // Обработчик для события "Панда Парк" — автозаполнение даты 24 июня
+        // Для "Панда Парк" — автозаполнение даты 24 июня
         eventSelect.addEventListener('change', function() {
             if (this.value === 'Панда Парк') {
-                // Устанавливаем дату 24 июня текущего года
                 const currentYear = new Date().getFullYear();
-                const pandaDate = new Date(currentYear, 5, 24); // Месяц 5 = Июнь
+                const pandaDate = new Date(currentYear, 5, 24);
                 const formattedDate = pandaDate.toISOString().split('T')[0];
                 dateInput.value = formattedDate;
-                // Делаем поле даты неактивным (но не disabled, чтобы сохранить стиль)
                 dateInput.style.borderColor = 'rgba(255, 215, 0, 0.6)';
                 dateInput.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.05)';
             } else {
                 dateInput.style.borderColor = '';
                 dateInput.style.boxShadow = '';
-                // Если выбрано другое событие — сбрасываем дату (оставляем пустым)
+                // Если выбрано другое событие — сбрасываем дату
                 if (this.value !== '') {
-                    // Не сбрасываем, если пользователь уже выбрал дату вручную
+                    // оставляем дату, если пользователь уже выбрал вручную
                 }
             }
             updateResult();
         });
 
-        // Обработчик изменения даты
         dateInput.addEventListener('change', function() {
             updateResult();
         });
 
-        // Обновление ячейки с результатом
         function updateResult() {
             const eventName = eventSelect.value;
             const dateValue = dateInput.value;
@@ -643,12 +645,10 @@
                 return;
             }
 
-            // Форматируем дату в читаемый вид
             const dateObj = new Date(dateValue + 'T00:00:00');
             const options = { day: 'numeric', month: 'long', year: 'numeric' };
             const formattedDate = dateObj.toLocaleDateString('ru-RU', options);
 
-            // Для Панда Парка добавляем эмодзи
             const displayEvent = eventName === 'Панда Парк' ? '🐼 Панда Парк' : eventName;
 
             resultBox.innerHTML = `
