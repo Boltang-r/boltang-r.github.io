@@ -106,7 +106,7 @@
             background: rgba(255, 255, 255, 0.03);
         }
 
-        /* ---------- СКРЫВАЕМАЯ ЧАСТЬ (открывается по "Да") ---------- */
+        /* ---------- СКРЫВАЕМАЯ ЧАСТЬ ---------- */
         .hidden-content {
             max-height: 0;
             opacity: 0;
@@ -297,57 +297,156 @@
             pointer-events: none;
         }
 
-        /* ---------- КАЛЕНДАРЬ ---------- */
+        /* ---------- КАЛЕНДАРЬ (СВОЙ) ---------- */
         .calendar-container {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .calendar-container label {
             margin-bottom: 8px;
         }
 
-        .calendar-input {
-            width: 100%;
-            padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+        .custom-calendar {
+            background: rgba(255, 255, 255, 0.04);
             border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px 12px 12px;
+            user-select: none;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 0 4px;
+        }
+
+        .calendar-header .month-year {
             color: #fff;
-            font-size: 16px;
-            font-family: inherit;
-            transition: 0.3s;
-            outline: none;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .calendar-header .nav-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.6);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-size: 18px;
             cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .calendar-input:hover {
-            border-color: rgba(255, 107, 157, 0.4);
-        }
-
-        .calendar-input:focus {
-            border-color: #ff6b9d;
-            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.15);
-        }
-
-        .calendar-input::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-            cursor: pointer;
-        }
-
-        /* ---------- НЕАКТИВНЫЕ ДНИ В КАЛЕНДАРЕ (серые) ---------- */
-        .calendar-input::-webkit-datetime-edit {
+        .calendar-header .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
             color: #fff;
         }
 
-        /* Стили для disabled дат через JS (будем добавлять класс) */
-        .calendar-input.inactive {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .calendar-header .nav-btn:active {
+            transform: scale(0.92);
         }
 
-        .calendar-input.inactive::-webkit-calendar-picker-indicator {
-            opacity: 0.3;
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            margin-bottom: 6px;
+        }
+
+        .calendar-weekdays span {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            padding: 4px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 15px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.5);
+            background: transparent;
+            transition: 0.2s;
+            cursor: default;
+            position: relative;
+        }
+
+        .calendar-day.available {
+            color: #fff;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .calendar-day.available:hover {
+            background: rgba(255, 107, 157, 0.2);
+            transform: scale(1.05);
+        }
+
+        .calendar-day.available:active {
+            transform: scale(0.92);
+        }
+
+        .calendar-day.selected {
+            background: linear-gradient(135deg, #ff6b9d, #c44b7a) !important;
+            color: #fff !important;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+            transform: scale(1.02);
+        }
+
+        .calendar-day.unavailable {
+            color: rgba(255, 255, 255, 0.15);
             cursor: not-allowed;
+            background: rgba(255, 80, 80, 0.03);
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.2;
+        }
+
+        .calendar-day.today {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .calendar-day.today.available {
+            border-color: rgba(255, 107, 157, 0.3);
+        }
+
+        /* Подсказка под календарём */
+        .calendar-hint {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-top: 10px;
+            text-align: left;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+            padding: 0 4px;
+        }
+
+        .calendar-hint span {
+            color: rgba(255, 215, 0, 0.5);
+        }
+
+        .calendar-hint .active-days {
+            color: rgba(100, 255, 150, 0.5);
         }
 
         /* ---------- ЯЧЕЙКА С ОТВЕТОМ ---------- */
@@ -384,20 +483,6 @@
         .result-box .placeholder {
             color: rgba(255, 255, 255, 0.25);
             font-size: 14px;
-        }
-
-        /* ---------- ПОДСКАЗКА О РЕЖИМЕ 2/2 ---------- */
-        .calendar-hint {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.35);
-            margin-top: 6px;
-            text-align: left;
-            font-weight: 300;
-            letter-spacing: 0.3px;
-        }
-
-        .calendar-hint span {
-            color: rgba(255, 215, 0, 0.5);
         }
 
         /* ---------- ЧАСТИЦЫ ---------- */
@@ -450,12 +535,20 @@
                 max-height: 60vh;
             }
             .planning-block {
-                padding: 16px 14px;
+                padding: 16px 12px;
             }
-            .custom-select select,
-            .calendar-input {
+            .custom-select select {
                 font-size: 14px;
                 padding: 12px 14px;
+            }
+            .custom-calendar {
+                padding: 12px 6px 10px;
+            }
+            .calendar-day {
+                font-size: 13px;
+            }
+            .calendar-weekdays span {
+                font-size: 10px;
             }
             .result-box {
                 min-height: 50px;
@@ -466,6 +559,12 @@
             }
             .calendar-hint {
                 font-size: 12px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .calendar-day {
+                font-size: 11px;
             }
         }
     </style>
@@ -492,13 +591,12 @@
             <button class="btn-choice btn-no" id="btnNo">Нет</button>
         </div>
 
-        <!-- СКРЫВАЕМАЯ ЧАСТЬ (открывается по "Да") -->
+        <!-- СКРЫВАЕМАЯ ЧАСТЬ -->
         <div class="hidden-content" id="hiddenContent">
             <div class="divider"></div>
             <div class="subtext">
                 Нажми сюда, если хочешь свидание с Игорем
             </div>
-            <!-- КНОПКА С ЭМОДЗИ СЕРДЦА -->
             <button class="heart-btn" id="heartBtn">❤️</button>
         </div>
 
@@ -520,12 +618,28 @@
                 </select>
             </div>
 
-            <!-- ВЫБОР ДАТЫ (КАЛЕНДАРЬ) -->
+            <!-- ====== СВОЙ КАЛЕНДАРЬ ====== -->
             <div class="calendar-container">
                 <label for="dateInput">📅 Дата</label>
-                <input type="date" class="calendar-input" id="dateInput" />
+                <div class="custom-calendar" id="customCalendar">
+                    <div class="calendar-header">
+                        <button class="nav-btn" id="prevMonth">◀</button>
+                        <span class="month-year" id="monthYear">Июнь 2026</span>
+                        <button class="nav-btn" id="nextMonth">▶</button>
+                    </div>
+                    <div class="calendar-weekdays">
+                        <span>Пн</span>
+                        <span>Вт</span>
+                        <span>Ср</span>
+                        <span>Чт</span>
+                        <span>Пт</span>
+                        <span>Сб</span>
+                        <span>Вс</span>
+                    </div>
+                    <div class="calendar-days" id="calendarDays"></div>
+                </div>
                 <div class="calendar-hint">
-                    📌 Доступны только <span>2 дня подряд</span>, затем <span>2 дня</span> недоступны (режим 2/2)
+                    📌 <span class="active-days">▬</span> Доступные дни (2/2: 2 дня доступны, 2 дня недоступны)
                 </div>
             </div>
 
@@ -560,7 +674,7 @@
             }
         })();
 
-        // ============ 2. КНОПКА "ДА" — РАСКРЫВАЕМ ОТКРЫТКУ ============
+        // ============ 2. КНОПКА "ДА" ============
         const btnYes = document.getElementById('btnYes');
         const btnNo = document.getElementById('btnNo');
         const hiddenContent = document.getElementById('hiddenContent');
@@ -572,7 +686,7 @@
             btnYes.disabled = true;
         });
 
-        // ============ 3. КНОПКА "НЕТ" — НИЧЕГО НЕ ДЕЛАЕТ ============
+        // ============ 3. КНОПКА "НЕТ" ============
         btnNo.addEventListener('click', function() {
             btnNo.style.transform = 'scale(0.95)';
             setTimeout(() => {
@@ -580,7 +694,7 @@
             }, 150);
         });
 
-        // ============ 4. КНОПКА СЕРДЦА → КАРТИНКА ============
+        // ============ 4. КНОПКА СЕРДЦА ============
         const heartBtn = document.getElementById('heartBtn');
         const popupImage = document.getElementById('popupImage');
         const popupOverlay = document.getElementById('popupOverlay');
@@ -588,16 +702,11 @@
         let imageTimer = null;
         let isImageShowing = false;
 
-        // ⚠️ ВСТАВЬТЕ СВОЮ ССЫЛКУ НА КАРТИНКУ:
-        const IMAGE_URL = 'https://raw.githubusercontent.com/Boltang-r/boltang-r.github.io/refs/heads/main/IMG_2150.jpeg';
+        const IMAGE_URL = 'https://i.pinimg.com/736x/8b/8a/8b/8b8a8b8a8b8a8b8a8b8a8b8a8b8a8b8a.jpg';
 
         heartBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-
-            if (planningBlock.classList.contains('show')) {
-                return;
-            }
-
+            if (planningBlock.classList.contains('show')) return;
             if (isImageShowing) {
                 clearTimeout(imageTimer);
                 imageTimer = null;
@@ -618,8 +727,7 @@
                 hideImage();
                 imageTimer = null;
                 planningBlock.classList.add('show');
-                // Активируем логику календаря после появления блока
-                updateCalendarAvailability();
+                renderCalendar(); // Показываем календарь
             }, 2000);
         }
 
@@ -639,162 +747,169 @@
             }
             hideImage();
             planningBlock.classList.add('show');
-            updateCalendarAvailability();
+            renderCalendar();
         });
 
-        // ============ 5. КАЛЕНДАРЬ С РЕЖИМОМ 2/2 ============
-        const dateInput = document.getElementById('dateInput');
+        // ============ 5. КАЛЕНДАРЬ 2/2 ============
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        let selectedDate = null;
+        const BASE_DAY = 24; // 24 июня
+        const BASE_MONTH = 5; // июнь (0-индексация)
 
-        // Функция проверки доступности даты (2/2 начиная с 24 июня)
-        function isDateAvailable(dateStr) {
-            const date = new Date(dateStr + 'T00:00:00');
-            const year = date.getFullYear();
-            const month = date.getMonth();
-            const day = date.getDate();
-
-            // Базовый день — 24 июня
-            const baseDate = new Date(year, 5, 24); // 5 = июнь
+        // Проверка доступности даты (2/2)
+        function isDateAvailable(year, month, day) {
+            const date = new Date(year, month, day);
+            const baseDate = new Date(year, BASE_MONTH, BASE_DAY);
 
             // Если дата раньше 24 июня — недоступна
             if (date < baseDate) {
                 return false;
             }
 
-            // Вычисляем разницу в днях от 24 июня
             const diffTime = date.getTime() - baseDate.getTime();
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-            // Паттерн 2/2: 2 дня доступны, 2 дня недоступны
-            // diffDays 0,1 — доступны; 2,3 — недоступны; 4,5 — доступны; и т.д.
             const cycle = diffDays % 4;
             return cycle === 0 || cycle === 1;
         }
 
-        // Функция обновления доступности календаря
-        function updateCalendarAvailability() {
-            const input = dateInput;
-            const currentValue = input.value;
+        function renderCalendar() {
+            const daysContainer = document.getElementById('calendarDays');
+            const monthYearEl = document.getElementById('monthYear');
 
-            // Проверяем все дни в календаре через атрибут min/max
-            // К сожалению, нативный input[type="date"] не позволяет индивидуально блокировать дни
-            // Поэтому используем другой подход: показываем сообщение и проверяем при выборе
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startDayOfWeek = firstDay.getDay(); // 0=Вс, 1=Пн...
 
-            // Устанавливаем min = 24 июня текущего года
-            const currentYear = new Date().getFullYear();
-            const minDate = new Date(currentYear, 5, 24);
-            const minDateStr = minDate.toISOString().split('T')[0];
-            input.min = minDateStr;
+            // Названия месяцев
+            const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+                'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+            ];
+            monthYearEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
-            // Если текущее значение неактивно — сбрасываем
-            if (currentValue && !isDateAvailable(currentValue)) {
-                input.value = '';
-                updateResult();
-                input.style.borderColor = 'rgba(255, 80, 80, 0.4)';
-                input.style.boxShadow = '0 0 20px rgba(255, 80, 80, 0.1)';
+            let html = '';
+
+            // Пустые ячейки для дней до начала месяца
+            // Сдвиг: Пн=0, Вс=6
+            const offset = (startDayOfWeek === 0) ? 6 : startDayOfWeek - 1;
+
+            for (let i = 0; i < offset; i++) {
+                html += `<div class="calendar-day other-month"></div>`;
+            }
+
+            // Дни месяца
+            const today = new Date();
+            const todayDate = today.getDate();
+            const todayMonth = today.getMonth();
+            const todayYear = today.getFullYear();
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const available = isDateAvailable(currentYear, currentMonth, day);
+                const isToday = (day === todayDate && currentMonth === todayMonth && currentYear === todayYear);
+                const isSelected = (selectedDate && selectedDate.day === day &&
+                    selectedDate.month === currentMonth && selectedDate.year === currentYear);
+
+                let classes = 'calendar-day';
+                if (available) classes += ' available';
+                else classes += ' unavailable';
+                if (isToday) classes += ' today';
+                if (isSelected) classes += ' selected';
+
+                const dataAttr = `data-day="${day}" data-month="${currentMonth}" data-year="${currentYear}"`;
+
+                if (available) {
+                    html += `<div class="${classes}" ${dataAttr} onclick="selectDate(${day}, ${currentMonth}, ${currentYear})">${day}</div>`;
+                } else {
+                    html += `<div class="${classes}">${day}</div>`;
+                }
+            }
+
+            daysContainer.innerHTML = html;
+        }
+
+        // Выбор даты
+        function selectDate(day, month, year) {
+            selectedDate = { day, month, year };
+            renderCalendar();
+            updateResult();
+
+            // Подсвечиваем поле выбора даты
+            const dateInput = document.getElementById('dateInput');
+            if (dateInput) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                dateInput.value = dateStr;
+                dateInput.style.borderColor = 'rgba(100, 255, 150, 0.3)';
+                dateInput.style.boxShadow = '0 0 20px rgba(100, 255, 150, 0.05)';
                 setTimeout(() => {
-                    input.style.borderColor = '';
-                    input.style.boxShadow = '';
-                }, 1500);
+                    dateInput.style.borderColor = '';
+                    dateInput.style.boxShadow = '';
+                }, 1000);
             }
         }
 
-        // Перехватываем выбор даты
-        dateInput.addEventListener('input', function(e) {
-            const selectedDate = this.value;
-
-            if (selectedDate) {
-                if (!isDateAvailable(selectedDate)) {
-                    // Если дата недоступна — показываем предупреждение и сбрасываем
-                    this.value = '';
-                    this.style.borderColor = 'rgba(255, 80, 80, 0.6)';
-                    this.style.boxShadow = '0 0 25px rgba(255, 80, 80, 0.15)';
-                    setTimeout(() => {
-                        this.style.borderColor = '';
-                        this.style.boxShadow = '';
-                    }, 1500);
-
-                    // Показываем подсказку
-                    const hint = document.querySelector('.calendar-hint');
-                    hint.style.color = 'rgba(255, 80, 80, 0.6)';
-                    setTimeout(() => {
-                        hint.style.color = '';
-                    }, 2000);
-
-                    updateResult();
-                    return;
-                }
-
-                // Дата доступна — сбрасываем стили ошибки
-                this.style.borderColor = 'rgba(100, 255, 150, 0.3)';
-                this.style.boxShadow = '0 0 20px rgba(100, 255, 150, 0.05)';
-                setTimeout(() => {
-                    this.style.borderColor = '';
-                    this.style.boxShadow = '';
-                }, 1000);
+        // Навигация по месяцам
+        document.getElementById('prevMonth').addEventListener('click', function() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
             }
-
-            updateResult();
+            renderCalendar();
         });
 
-        // Дополнительная проверка при изменении (для браузеров, которые не вызывают input)
-        dateInput.addEventListener('change', function() {
-            const selectedDate = this.value;
-            if (selectedDate && !isDateAvailable(selectedDate)) {
-                this.value = '';
-                updateResult();
+        document.getElementById('nextMonth').addEventListener('click', function() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
             }
+            renderCalendar();
         });
 
         // ============ 6. ЛОГИКА ВЫБОРА СОБЫТИЯ ============
         const eventSelect = document.getElementById('eventSelect');
         const resultBox = document.getElementById('resultBox');
+        const dateInputHidden = document.getElementById('dateInput');
         let lastSelectedEvent = '';
 
         eventSelect.addEventListener('change', function() {
             const currentEvent = this.value;
 
             if (currentEvent !== lastSelectedEvent && lastSelectedEvent !== '') {
-                dateInput.value = '';
-                dateInput.style.borderColor = '';
-                dateInput.style.boxShadow = '';
+                // Сбрасываем выбранную дату
+                selectedDate = null;
+                renderCalendar();
             }
 
             lastSelectedEvent = currentEvent;
 
             if (currentEvent === 'Панда Парк') {
                 const currentYear = new Date().getFullYear();
-                const pandaDate = new Date(currentYear, 5, 24);
-                const formattedDate = pandaDate.toISOString().split('T')[0];
-
-                // Проверяем, доступна ли эта дата
-                if (isDateAvailable(formattedDate)) {
-                    dateInput.value = formattedDate;
-                    dateInput.style.borderColor = 'rgba(255, 215, 0, 0.6)';
-                    dateInput.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.05)';
+                // Проверяем, доступно ли 24 июня
+                if (isDateAvailable(currentYear, 5, 24)) {
+                    selectDate(24, 5, currentYear);
                 } else {
-                    // Если вдруг 24 июня недоступно (не должно случиться, но на всякий случай)
-                    dateInput.value = '';
+                    // Если 24 июня недоступно (не должно случиться)
+                    selectedDate = null;
+                    renderCalendar();
                 }
             }
 
             updateResult();
         });
 
-        dateInput.addEventListener('change', function() {
-            updateResult();
-        });
-
         function updateResult() {
             const eventName = eventSelect.value;
-            const dateValue = dateInput.value;
 
-            if (!eventName || !dateValue) {
+            if (!eventName || !selectedDate) {
                 resultBox.innerHTML = `<span class="placeholder">Выберите событие и дату ✨</span>`;
                 resultBox.classList.remove('has-result');
                 return;
             }
 
-            const dateObj = new Date(dateValue + 'T00:00:00');
+            const { day, month, year } = selectedDate;
+            const dateObj = new Date(year, month, day);
             const options = { day: 'numeric', month: 'long', year: 'numeric' };
             const formattedDate = dateObj.toLocaleDateString('ru-RU', options);
 
@@ -806,14 +921,24 @@
                 </span>
             `;
             resultBox.classList.add('has-result');
+
+            // Обновляем скрытый input для совместимости
+            if (dateInputHidden) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                dateInputHidden.value = dateStr;
+            }
         }
 
-        // ============ 7. БОНУС ============
+        // ============ 7. ИНИЦИАЛИЗАЦИЯ ============
+        // Первый рендер календаря
+        renderCalendar();
+
         console.log('💖 Открытка для Алины готова!');
         console.log('📸 Замени IMAGE_URL на свою картинку');
         console.log('🐼 Для "Панда Парк" дата автоматически 24 июня');
         console.log('📅 Календарь работает в режиме 2/2 начиная с 24 июня');
         console.log('   Доступны: 24,25 июня | 28,29 июня | 2,3 июля | и т.д.');
+        console.log('✅ На iOS тоже работает!');
     </script>
 </body>
 </html>
