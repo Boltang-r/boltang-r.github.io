@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Открытка с сюрпризом</title>
+    <style>
+        /* ---------- ГЛОБАЛЬНЫЙ СТИЛЬ ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #0b0e1a 0%, #1a1f33 100%);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            overflow: hidden;
+            /* фон для частиц */;
+        }
+
+        /* ---------- КОНВЕРТ / КАРТОЧКА ---------- */
+        .card {
+            width: 100%;
+            max-width: 520px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 48px 48px 32px 32px;
+            padding: 40px 30px 45px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.4s ease;
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .card:hover {
+            transform: scale(1.01) translateY(-4px);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
+        }
+
+        /* ---------- ЗАМОК (иконка) ---------- */
+        .lock-icon {
+            font-size: 48px;
+            display: inline-block;
+            margin-bottom: 20px;
+            background: rgba(255, 215, 0, 0.12);
+            padding: 16px 22px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.05);
+            transition: 0.3s;
+        }
+
+        .card:hover .lock-icon {
+            transform: rotate(-6deg) scale(1.04);
+            border-color: rgba(255, 215, 0, 0.5);
+        }
+
+        /* ---------- ТЕКСТ ОТКРЫТКИ ---------- */
+        .greeting {
+            font-size: 38px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f6e9a6, #f0b87b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            text-shadow: 0 0 40px rgba(240, 184, 123, 0.15);
+        }
+
+        .subtext {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .divider {
+            width: 70px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.4), transparent);
+            margin: 16px auto 22px;
+            border-radius: 4px;
+        }
+
+        /* ---------- СКРЫТЫЙ ТЕКСТ (появляется по клику) ---------- */
+        .hidden-message {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.8s cubic-bezier(0.23, 1, 0.32, 1),
+                opacity 0.6s ease, margin 0.4s ease;
+            margin-top: 0;
+        }
+
+        .hidden-message.open {
+            max-height: 400px; /* достаточно для текста */
+            opacity: 1;
+            margin-top: 28px;
+        }
+
+        .hidden-message p {
+            font-size: 20px;
+            font-weight: 400;
+            color: #fff3e0;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 22px 20px;
+            border-radius: 28px;
+            border-left: 4px solid #f0b87b;
+            backdrop-filter: blur(4px);
+            line-height: 1.6;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.04);
+        }
+
+        .hidden-message .emoji-big {
+            font-size: 42px;
+            display: block;
+            margin: 8px 0 4px;
+        }
+
+        /* ---------- КНОПКА / ПРИЗЫВ ---------- */
+        .hint {
+            display: inline-block;
+            margin-top: 26px;
+            padding: 10px 26px;
+            border-radius: 60px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #0b0e1a;
+            background: linear-gradient(135deg, #f6e9a6, #f0b87b);
+            box-shadow: 0 6px 20px rgba(240, 184, 123, 0.25);
+            transition: 0.25s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hint:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(240, 184, 123, 0.4);
+        }
+
+        /* ---------- ЧАСТИЦЫ (снег / звёзды) ---------- */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+            width: 4px;
+            height: 4px;
+            animation: float-particle linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(calc(100vh + 40px)) translateX(40px) scale(0.2);
+                opacity: 0.1;
+            }
+        }
+
+        /* ---------- АДАПТИВ ---------- */
+        @media (max-width: 480px) {
+            .card {
+                padding: 32px 18px 35px;
+                border-radius: 32px;
+            }
+            .greeting {
+                font-size: 30px;
+            }
+            .subtext {
+                font-size: 16px;
+            }
+            .lock-icon {
+                font-size: 38px;
+                padding: 12px 18px;
+            }
+            .hidden-message p {
+                font-size: 17px;
+                padding: 18px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== ЧАСТИЦЫ (создаются JS) ====== -->
+
+    <!-- ====== ОТКРЫТКА ====== -->
+    <div class="card" id="card">
+
+        <div class="lock-icon" id="lockIcon">🔒</div>
+
+        <div class="greeting">✨ С Днём Рождения! ✨</div>
+        <div class="subtext">
+            Нажми на открытку — внутри сюрприз
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Скрытый блок -->
+        <div class="hidden-message" id="hiddenMessage">
+            <p>
+                <span class="emoji-big">🎉</span>
+                Пусть каждый день приносит радость,<br>
+                улыбки и вдохновение!<br>
+                <span style="display:inline-block; margin-top:12px; font-size:28px;">❤️‍🔥</span>
+            </p>
+        </div>
+
+        <button class="hint" id="hintBtn">▶ Открыть</button>
+    </div>
+
+    <script>
+        // ============ 1. ЧАСТИЦЫ (звёздный снег) ============
+        (function createParticles() {
+            const count = 50;
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = 2 + Math.random() * 5;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = '-10px';
+                p.style.animationDuration = 8 + Math.random() * 16 + 's';
+                p.style.animationDelay = Math.random() * 18 + 's';
+                p.style.opacity = 0.2 + Math.random() * 0.4;
+                // случайный оттенок
+                const hue = Math.random() * 60 + 30; // тёплые тона
+                p.style.background = `hsla(${hue}, 70%, 80%, 0.5)`;
+                p.style.boxShadow = `0 0 ${6 + Math.random() * 20}px hsla(${hue}, 70%, 80%, 0.15)`;
+                document.body.appendChild(p);
+            }
+        })();
+
+        // ============ 2. ЛОГИКА ОТКРЫТКИ ============
+        const card = document.getElementById('card');
+        const hiddenMsg = document.getElementById('hiddenMessage');
+        const lockIcon = document.getElementById('lockIcon');
+        const hintBtn = document.getElementById('hintBtn');
+
+        let isOpen = false;
+
+        function toggleCard(e) {
+            // если кликнули по кнопке — не мешаем, но она сама вызывает toggle
+            if (e && e.target === hintBtn) {
+                // кнопка сработает отдельно, но мы вызовем переключение
+                // (чтобы не было двойного срабатывания)
+            }
+            isOpen = !isOpen;
+
+            if (isOpen) {
+                hiddenMsg.classList.add('open');
+                lockIcon.textContent = '📩';
+                hintBtn.textContent = '✖ Закрыть';
+                // лёгкий тактильный отклик
+                card.style.transform = 'scale(0.99)';
+                setTimeout(() => { card.style.transform = ''; }, 150);
+            } else {
+                hiddenMsg.classList.remove('open');
+                lockIcon.textContent = '🔒';
+                hintBtn.textContent = '▶ Открыть';
+            }
+        }
+
+        // клик по карточке (кроме кнопки)
+        card.addEventListener('click', function(e) {
+            if (e.target === hintBtn) return; // кнопка обработает сама
+            toggleCard(e);
+        });
+
+        // клик по кнопке
+        hintBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); // чтобы не сработал клик по карточке дважды
+            toggleCard(e);
+        });
+
+        // ============ 3. БОНУС: изменить текст легко ============
+        // (можно заменить текст прямо здесь, если нужно)
+        console.log('✨ Открытка готова! Измени текст в HTML по своему вкусу.');
+    </script>
+</body>
+</html>
