@@ -20,13 +20,13 @@
             background: linear-gradient(145deg, #1a0b1a 0%, #2d1a33 50%, #1a0b1a 100%);
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             padding: 20px;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         /* ---------- КАРТОЧКА ---------- */
         .card {
             width: 100%;
-            max-width: 520px;
+            max-width: 560px;
             background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
@@ -118,7 +118,7 @@
         }
 
         .hidden-content.open {
-            max-height: 600px;
+            max-height: 800px;
             opacity: 1;
             margin-top: 28px;
         }
@@ -207,6 +207,165 @@
             pointer-events: auto;
         }
 
+        /* ---------- БЛОК ВЫБОРА СОБЫТИЯ ---------- */
+        .planning-block {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            animation: fadeSlideUp 0.5s ease;
+        }
+
+        .planning-block.show {
+            display: block;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .planning-block label {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        /* ---------- ВЫПАДАЮЩИЙ СПИСОК ---------- */
+        .custom-select {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .custom-select select {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 16px;
+            font-family: inherit;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            transition: 0.3s;
+            outline: none;
+        }
+
+        .custom-select select:hover {
+            border-color: rgba(255, 107, 157, 0.4);
+        }
+
+        .custom-select select:focus {
+            border-color: #ff6b9d;
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.15);
+        }
+
+        .custom-select select option {
+            background: #2d1a33;
+            color: #fff;
+            padding: 10px;
+        }
+
+        .custom-select::after {
+            content: '▾';
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 20px;
+            pointer-events: none;
+        }
+
+        /* ---------- КАЛЕНДАРЬ ---------- */
+        .calendar-container {
+            margin-bottom: 20px;
+        }
+
+        .calendar-container label {
+            margin-bottom: 8px;
+        }
+
+        .calendar-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 16px;
+            font-family: inherit;
+            transition: 0.3s;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .calendar-input:hover {
+            border-color: rgba(255, 107, 157, 0.4);
+        }
+
+        .calendar-input:focus {
+            border-color: #ff6b9d;
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.15);
+        }
+
+        .calendar-input::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+
+        /* ---------- ЯЧЕЙКА С ОТВЕТОМ ---------- */
+        .result-box {
+            margin-top: 20px;
+            padding: 18px 20px;
+            background: rgba(255, 107, 157, 0.08);
+            border: 1px solid rgba(255, 107, 157, 0.2);
+            border-radius: 16px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .result-box.has-result {
+            background: rgba(255, 107, 157, 0.15);
+            border-color: rgba(255, 107, 157, 0.4);
+        }
+
+        .result-box .result-text {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .result-box .result-text .highlight {
+            color: #ff9a9e;
+            font-weight: 600;
+        }
+
+        .result-box .placeholder {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 14px;
+        }
+
         /* ---------- ЧАСТИЦЫ ---------- */
         .particle {
             position: fixed;
@@ -256,6 +415,21 @@
                 max-width: 92vw;
                 max-height: 60vh;
             }
+            .planning-block {
+                padding: 16px;
+            }
+            .custom-select select,
+            .calendar-input {
+                font-size: 14px;
+                padding: 12px 14px;
+            }
+            .result-box {
+                min-height: 50px;
+                padding: 14px 16px;
+            }
+            .result-box .result-text {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -289,6 +463,37 @@
             </div>
             <!-- КНОПКА С ЭМОДЗИ СЕРДЦА -->
             <button class="heart-btn" id="heartBtn">❤️</button>
+
+            <!-- ====== БЛОК ПЛАНИРОВАНИЯ (появляется после картинки) ====== -->
+            <div class="planning-block" id="planningBlock">
+
+                <!-- ВЫБОР СОБЫТИЯ -->
+                <div class="custom-select">
+                    <label for="eventSelect">🎯 Событие</label>
+                    <select id="eventSelect">
+                        <option value="">— Выберите событие —</option>
+                        <option value="Aquatoria">Aquatoria</option>
+                        <option value="Глэмпинг у моря (выбираем вдвоем)">Глэмпинг у моря (выбираем вдвоем)</option>
+                        <option value="Панда Парк">Панда Парк 🐼</option>
+                        <option value="Ужин в ресторане">Ужин в ресторане</option>
+                        <option value="Поход в кино">Поход в кино</option>
+                        <option value="Катание на сапах">Катание на сапах</option>
+                        <option value="Велопрогулка на Русском острове">Велопрогулка на Русском острове</option>
+                    </select>
+                </div>
+
+                <!-- ВЫБОР ДАТЫ (КАЛЕНДАРЬ) -->
+                <div class="calendar-container">
+                    <label for="dateInput">📅 Дата</label>
+                    <input type="date" class="calendar-input" id="dateInput" />
+                </div>
+
+                <!-- ЯЧЕЙКА С ОТВЕТОМ -->
+                <div class="result-box" id="resultBox">
+                    <span class="placeholder">Выберите событие и дату ✨</span>
+                </div>
+
+            </div>
         </div>
 
     </div>
@@ -322,7 +527,6 @@
 
         btnYes.addEventListener('click', function() {
             hiddenContent.classList.add('open');
-            // Делаем кнопки чуть менее заметными, но оставляем
             btnYes.style.opacity = '0.6';
             btnYes.style.cursor = 'default';
             btnYes.disabled = true;
@@ -330,8 +534,6 @@
 
         // ============ 3. КНОПКА "НЕТ" — НИЧЕГО НЕ ДЕЛАЕТ ============
         btnNo.addEventListener('click', function() {
-            // Абсолютно ничего не происходит
-            // Но можно добавить лёгкую анимацию для забавы (по желанию)
             btnNo.style.transform = 'scale(0.95)';
             setTimeout(() => {
                 btnNo.style.transform = '';
@@ -342,26 +544,27 @@
         const heartBtn = document.getElementById('heartBtn');
         const popupImage = document.getElementById('popupImage');
         const popupOverlay = document.getElementById('popupOverlay');
+        const planningBlock = document.getElementById('planningBlock');
         let imageTimer = null;
+        let isImageShowing = false;
 
-        // ⚠️ ВСТАВЬТЕ СВОЮ ССЫЛКУ НА КАРТИНКУ ВМЕСТО ЭТОЙ:
+        // ⚠️ ВСТАВЬТЕ СВОЮ ССЫЛКУ НА КАРТИНКУ:
         const IMAGE_URL = 'https://raw.githubusercontent.com/Boltang-r/boltang-r.github.io/refs/heads/main/IMG_2150.jpeg';
 
         heartBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-
-            if (imageTimer) {
+            if (isImageShowing) {
                 clearTimeout(imageTimer);
                 imageTimer = null;
                 hideImage();
                 setTimeout(() => showImage(), 100);
                 return;
             }
-
             showImage();
         });
 
         function showImage() {
+            isImageShowing = true;
             popupImage.src = IMAGE_URL;
             popupImage.classList.add('show');
             popupOverlay.classList.add('show');
@@ -369,10 +572,13 @@
             imageTimer = setTimeout(() => {
                 hideImage();
                 imageTimer = null;
+                // ПОСЛЕ ИСЧЕЗНОВЕНИЯ КАРТИНКИ ПОКАЗЫВАЕМ БЛОК ПЛАНИРОВАНИЯ
+                planningBlock.classList.add('show');
             }, 2000);
         }
 
         function hideImage() {
+            isImageShowing = false;
             popupImage.classList.remove('show');
             popupOverlay.classList.remove('show');
             setTimeout(() => {
@@ -386,11 +592,77 @@
                 imageTimer = null;
             }
             hideImage();
+            // Если картинку закрыли раньше — блок всё равно показываем
+            planningBlock.classList.add('show');
         });
 
-        // ============ 5. БОНУС ============
+        // ============ 5. ЛОГИКА ВЫБОРА СОБЫТИЯ И ДАТЫ ============
+        const eventSelect = document.getElementById('eventSelect');
+        const dateInput = document.getElementById('dateInput');
+        const resultBox = document.getElementById('resultBox');
+
+        // Устанавливаем минимальную дату — сегодня
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+
+        // Обработчик для события "Панда Парк" — автозаполнение даты 24 июня
+        eventSelect.addEventListener('change', function() {
+            if (this.value === 'Панда Парк') {
+                // Устанавливаем дату 24 июня текущего года
+                const currentYear = new Date().getFullYear();
+                const pandaDate = new Date(currentYear, 5, 24); // Месяц 5 = Июнь
+                const formattedDate = pandaDate.toISOString().split('T')[0];
+                dateInput.value = formattedDate;
+                // Делаем поле даты неактивным (но не disabled, чтобы сохранить стиль)
+                dateInput.style.borderColor = 'rgba(255, 215, 0, 0.6)';
+                dateInput.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.05)';
+            } else {
+                dateInput.style.borderColor = '';
+                dateInput.style.boxShadow = '';
+                // Если выбрано другое событие — сбрасываем дату (оставляем пустым)
+                if (this.value !== '') {
+                    // Не сбрасываем, если пользователь уже выбрал дату вручную
+                }
+            }
+            updateResult();
+        });
+
+        // Обработчик изменения даты
+        dateInput.addEventListener('change', function() {
+            updateResult();
+        });
+
+        // Обновление ячейки с результатом
+        function updateResult() {
+            const eventName = eventSelect.value;
+            const dateValue = dateInput.value;
+
+            if (!eventName || !dateValue) {
+                resultBox.innerHTML = `<span class="placeholder">Выберите событие и дату ✨</span>`;
+                resultBox.classList.remove('has-result');
+                return;
+            }
+
+            // Форматируем дату в читаемый вид
+            const dateObj = new Date(dateValue + 'T00:00:00');
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const formattedDate = dateObj.toLocaleDateString('ru-RU', options);
+
+            // Для Панда Парка добавляем эмодзи
+            const displayEvent = eventName === 'Панда Парк' ? '🐼 Панда Парк' : eventName;
+
+            resultBox.innerHTML = `
+                <span class="result-text">
+                    ✅ <span class="highlight">${displayEvent}</span> — <span class="highlight">${formattedDate}</span>
+                </span>
+            `;
+            resultBox.classList.add('has-result');
+        }
+
+        // ============ 6. БОНУС ============
         console.log('💖 Открытка для Алины готова!');
-        console.log('📸 Замени IMAGE_URL на свою картинку (строка ~230)');
+        console.log('📸 Замени IMAGE_URL на свою картинку');
+        console.log('🐼 Для "Панда Парк" дата автоматически 24 июня');
     </script>
 </body>
 </html>
