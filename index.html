@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Открытка с сюрпризом</title>
+    <title>Открытка для Алины</title>
     <style>
         /* ---------- ГЛОБАЛЬНЫЙ СТИЛЬ ---------- */
         * {
@@ -17,18 +17,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(145deg, #0b0e1a 0%, #1a1f33 100%);
+            background: linear-gradient(145deg, #1a0b1a 0%, #2d1a33 50%, #1a0b1a 100%);
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             padding: 20px;
             overflow: hidden;
-            /* фон для частиц */;
         }
 
         /* ---------- КОНВЕРТ / КАРТОЧКА ---------- */
         .card {
             width: 100%;
             max-width: 520px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             border-radius: 48px 48px 32px 32px;
@@ -39,8 +38,6 @@
             position: relative;
             z-index: 10;
             text-align: center;
-            cursor: pointer;
-            user-select: none;
         }
 
         .card:hover {
@@ -53,35 +50,35 @@
             font-size: 48px;
             display: inline-block;
             margin-bottom: 20px;
-            background: rgba(255, 215, 0, 0.12);
+            background: rgba(255, 107, 157, 0.12);
             padding: 16px 22px;
             border-radius: 60px;
-            border: 1px solid rgba(255, 215, 0, 0.25);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 107, 157, 0.25);
+            box-shadow: 0 0 30px rgba(255, 107, 157, 0.05);
             transition: 0.3s;
         }
 
         .card:hover .lock-icon {
             transform: rotate(-6deg) scale(1.04);
-            border-color: rgba(255, 215, 0, 0.5);
+            border-color: rgba(255, 107, 157, 0.5);
         }
 
         /* ---------- ТЕКСТ ОТКРЫТКИ ---------- */
         .greeting {
             font-size: 38px;
             font-weight: 700;
-            background: linear-gradient(135deg, #f6e9a6, #f0b87b);
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             letter-spacing: -0.5px;
             line-height: 1.2;
             margin-bottom: 12px;
-            text-shadow: 0 0 40px rgba(240, 184, 123, 0.15);
+            text-shadow: 0 0 40px rgba(255, 107, 157, 0.15);
         }
 
         .subtext {
-            color: rgba(255, 255, 255, 0.65);
+            color: rgba(255, 255, 255, 0.75);
             font-size: 18px;
             font-weight: 300;
             letter-spacing: 0.3px;
@@ -92,7 +89,7 @@
         .divider {
             width: 70px;
             height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 157, 0.4), transparent);
             margin: 16px auto 22px;
             border-radius: 4px;
         }
@@ -108,7 +105,7 @@
         }
 
         .hidden-message.open {
-            max-height: 400px; /* достаточно для текста */
+            max-height: 400px;
             opacity: 1;
             margin-top: 28px;
         }
@@ -120,7 +117,7 @@
             background: rgba(0, 0, 0, 0.25);
             padding: 22px 20px;
             border-radius: 28px;
-            border-left: 4px solid #f0b87b;
+            border-left: 4px solid #ff6b9d;
             backdrop-filter: blur(4px);
             line-height: 1.6;
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.04);
@@ -132,30 +129,75 @@
             margin: 8px 0 4px;
         }
 
-        /* ---------- КНОПКА / ПРИЗЫВ ---------- */
-        .hint {
+        /* ---------- КНОПКА (ЭМОДЗИ СЕРДЦА) ---------- */
+        .heart-btn {
             display: inline-block;
             margin-top: 26px;
-            padding: 10px 26px;
+            padding: 14px 32px;
             border-radius: 60px;
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: #0b0e1a;
-            background: linear-gradient(135deg, #f6e9a6, #f0b87b);
-            box-shadow: 0 6px 20px rgba(240, 184, 123, 0.25);
+            font-size: 32px;
+            background: linear-gradient(135deg, #ff6b9d, #c44b7a);
+            box-shadow: 0 6px 25px rgba(255, 107, 157, 0.35);
             transition: 0.25s;
             border: none;
             cursor: pointer;
+            line-height: 1;
+            user-select: none;
         }
 
-        .hint:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 30px rgba(240, 184, 123, 0.4);
+        .heart-btn:hover {
+            transform: scale(1.12);
+            box-shadow: 0 10px 35px rgba(255, 107, 157, 0.5);
         }
 
-        /* ---------- ЧАСТИЦЫ (снег / звёзды) ---------- */
+        .heart-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* ---------- ВСПЛЫВАЮЩАЯ КАРТИНКА ---------- */
+        .popup-image {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.7);
+            max-width: 80vw;
+            max-height: 70vh;
+            border-radius: 28px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 3px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .popup-image.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* ---------- ФОН ПОД КАРТИНКОЙ ---------- */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ---------- ЧАСТИЦЫ ---------- */
         .particle {
             position: fixed;
             border-radius: 50%;
@@ -186,7 +228,7 @@
                 border-radius: 32px;
             }
             .greeting {
-                font-size: 30px;
+                font-size: 28px;
             }
             .subtext {
                 font-size: 16px;
@@ -199,21 +241,35 @@
                 font-size: 17px;
                 padding: 18px 14px;
             }
+            .heart-btn {
+                font-size: 28px;
+                padding: 12px 26px;
+            }
+            .popup-image {
+                max-width: 92vw;
+                max-height: 60vh;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ====== ЧАСТИЦЫ (создаются JS) ====== -->
+    <!-- ====== ЧАСТИЦЫ ====== -->
+
+    <!-- ====== ФОН ДЛЯ КАРТИНКИ ====== -->
+    <div class="popup-overlay" id="popupOverlay"></div>
+
+    <!-- ====== КАРТИНКА (всплывает) ====== -->
+    <img class="popup-image" id="popupImage" src="" alt="Картинка" />
 
     <!-- ====== ОТКРЫТКА ====== -->
     <div class="card" id="card">
 
-        <div class="lock-icon" id="lockIcon">🔒</div>
+        <div class="lock-icon" id="lockIcon">💌</div>
 
-        <div class="greeting">✨ С Днём Рождения! ✨</div>
+        <div class="greeting">✨ Алина самая лучшая на свете! ✨</div>
         <div class="subtext">
-            Нажми на открытку — внутри сюрприз
+            Нажми сюда если хочешь свидания с Игорем
         </div>
 
         <div class="divider"></div>
@@ -221,20 +277,20 @@
         <!-- Скрытый блок -->
         <div class="hidden-message" id="hiddenMessage">
             <p>
-                <span class="emoji-big">🎉</span>
-                Пусть каждый день приносит радость,<br>
-                улыбки и вдохновение!<br>
-                <span style="display:inline-block; margin-top:12px; font-size:28px;">❤️‍🔥</span>
+                <span class="emoji-big">🌹</span>
+                Я тебя очень жду!<br>
+                <span style="display:inline-block; margin-top:12px; font-size:28px;">💕</span>
             </p>
         </div>
 
-        <button class="hint" id="hintBtn">▶ Открыть</button>
+        <!-- КНОПКА С ЭМОДЗИ СЕРДЦА -->
+        <button class="heart-btn" id="heartBtn">❤️</button>
     </div>
 
     <script>
-        // ============ 1. ЧАСТИЦЫ (звёздный снег) ============
+        // ============ 1. ЧАСТИЦЫ ============
         (function createParticles() {
-            const count = 50;
+            const count = 45;
             for (let i = 0; i < count; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
@@ -246,10 +302,9 @@
                 p.style.animationDuration = 8 + Math.random() * 16 + 's';
                 p.style.animationDelay = Math.random() * 18 + 's';
                 p.style.opacity = 0.2 + Math.random() * 0.4;
-                // случайный оттенок
-                const hue = Math.random() * 60 + 30; // тёплые тона
-                p.style.background = `hsla(${hue}, 70%, 80%, 0.5)`;
-                p.style.boxShadow = `0 0 ${6 + Math.random() * 20}px hsla(${hue}, 70%, 80%, 0.15)`;
+                const hue = Math.random() * 60 + 320; // розово-пурпурные тона
+                p.style.background = `hsla(${hue}, 80%, 75%, 0.5)`;
+                p.style.boxShadow = `0 0 ${6 + Math.random() * 20}px hsla(${hue}, 80%, 75%, 0.15)`;
                 document.body.appendChild(p);
             }
         })();
@@ -258,47 +313,86 @@
         const card = document.getElementById('card');
         const hiddenMsg = document.getElementById('hiddenMessage');
         const lockIcon = document.getElementById('lockIcon');
-        const hintBtn = document.getElementById('hintBtn');
+        const heartBtn = document.getElementById('heartBtn');
 
         let isOpen = false;
 
         function toggleCard(e) {
-            // если кликнули по кнопке — не мешаем, но она сама вызывает toggle
-            if (e && e.target === hintBtn) {
-                // кнопка сработает отдельно, но мы вызовем переключение
-                // (чтобы не было двойного срабатывания)
-            }
+            if (e && e.target === heartBtn) return;
             isOpen = !isOpen;
 
             if (isOpen) {
                 hiddenMsg.classList.add('open');
                 lockIcon.textContent = '📩';
-                hintBtn.textContent = '✖ Закрыть';
-                // лёгкий тактильный отклик
-                card.style.transform = 'scale(0.99)';
-                setTimeout(() => { card.style.transform = ''; }, 150);
             } else {
                 hiddenMsg.classList.remove('open');
-                lockIcon.textContent = '🔒';
-                hintBtn.textContent = '▶ Открыть';
+                lockIcon.textContent = '💌';
             }
         }
 
-        // клик по карточке (кроме кнопки)
         card.addEventListener('click', function(e) {
-            if (e.target === hintBtn) return; // кнопка обработает сама
+            if (e.target === heartBtn) return;
             toggleCard(e);
         });
 
-        // клик по кнопке
-        hintBtn.addEventListener('click', function(e) {
-            e.stopPropagation(); // чтобы не сработал клик по карточке дважды
-            toggleCard(e);
+        // ============ 3. КНОПКА СЕРДЦА → КАРТИНКА ============
+        const popupImage = document.getElementById('popupImage');
+        const popupOverlay = document.getElementById('popupOverlay');
+        let imageTimer = null;
+
+        // ⚠️ ВСТАВЬТЕ СВОЮ ССЫЛКУ НА КАРТИНКУ ВМЕСТО ЭТОЙ:
+        const IMAGE_URL = 'https://i.pinimg.com/736x/8b/8a/8b/8b8a8b8a8b8a8b8a8b8a8b8a8b8a8b8a.jpg';
+
+        heartBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+
+            // Если уже есть таймер — сбрасываем (чтобы картинка не висела)
+            if (imageTimer) {
+                clearTimeout(imageTimer);
+                imageTimer = null;
+                hideImage();
+                // Даём небольшую задержку, чтобы показать заново
+                setTimeout(() => showImage(), 100);
+                return;
+            }
+
+            showImage();
         });
 
-        // ============ 3. БОНУС: изменить текст легко ============
-        // (можно заменить текст прямо здесь, если нужно)
-        console.log('✨ Открытка готова! Измени текст в HTML по своему вкусу.');
+        function showImage() {
+            // Устанавливаем картинку
+            popupImage.src = IMAGE_URL;
+            popupImage.classList.add('show');
+            popupOverlay.classList.add('show');
+
+            // Убираем через 2 секунды
+            imageTimer = setTimeout(() => {
+                hideImage();
+                imageTimer = null;
+            }, 2000);
+        }
+
+        function hideImage() {
+            popupImage.classList.remove('show');
+            popupOverlay.classList.remove('show');
+            // Очищаем src, чтобы при следующем показе не было старой картинки
+            setTimeout(() => {
+                popupImage.src = '';
+            }, 400);
+        }
+
+        // Клик по фону/оверлею — скрыть картинку (если нужно)
+        popupOverlay.addEventListener('click', function() {
+            if (imageTimer) {
+                clearTimeout(imageTimer);
+                imageTimer = null;
+            }
+            hideImage();
+        });
+
+        // ============ 4. БОНУС ============
+        console.log('💖 Открытка для Алины готова!');
+        console.log('📸 Замени IMAGE_URL на свою картинку (строка 225)');
     </script>
 </body>
 </html>
